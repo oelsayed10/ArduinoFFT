@@ -1,0 +1,20 @@
+Sketch uses 95672 bytes (11%) of program storage space. Maximum is 811008 bytes.
+Global variables use 48864 bytes (20%) of dynamic memory, leaving 188704 bytes for local variables. Maximum is 237568 bytes.
+Upgrading target on /dev/cu.usbmodem14501 with DFU package /private/var/folders/fd/9wy5k66j63s43n5sqlcjfss40000gn/T/arduino_build_183063/PDM_FFT_.ino.zip. Flow control is disabled, Single bank, Touch disabled
+Timed out waiting for acknowledgement from device.
+
+Failed to upgrade target. Error is: No data received on serial port. Not able to proceed.
+Traceback (most recent call last):
+  File "nordicsemi/__main__.py", line 294, in serial
+  File "nordicsemi/dfu/dfu.py", line 235, in dfu_send_images
+  File "nordicsemi/dfu/dfu.py", line 200, in _dfu_send_image
+  File "nordicsemi/dfu/dfu_transport_serial.py", line 179, in send_start_dfu
+  File "nordicsemi/dfu/dfu_transport_serial.py", line 243, in send_packet
+  File "nordicsemi/dfu/dfu_transport_serial.py", line 282, in get_ack_nr
+nordicsemi.exceptions.NordicSemiException: No data received on serial port. Not able to proceed.
+
+Possible causes:
+- Selected Bootloader version does not match the one on Bluefruit device.
+    Please upgrade the Bootloader or select correct version in Tools->Bootloader.
+- Baud rate must be 115200, Flow control must be off.
+- Target is not in DFU mode. Ground DFU pin and RESET and release both to enter DFU mode.
