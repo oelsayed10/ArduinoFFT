@@ -2,6 +2,8 @@
 #include "LSM6DS3.h"
 #include "Wire.h"
 #include "mic.h"
+#include "RunningAverage.h" 
+
 
 // Settings
 #define DEBUG 1
@@ -20,6 +22,9 @@ mic_config_t mic_config{
 
 //Create an instance of class NRF52840
 NRF52840_ADC_Class Mic(&mic_config);
+
+RunningAverage myRA(10); //include these 2 lines of code before void setup()
+int samples = 0;
 
 int16_t recording_buf[SAMPLES];
 volatile uint8_t recording = 0;
@@ -42,6 +47,12 @@ void setup() {
  else { Serial.println("Device OK!");
         Serial.println("Mic initialization done.");
         Serial.println("Microphone,Accelerometer,Temperature"); }
+
+  Serial.begin(9600); // Original = 115200
+  Serial.println("Demo RunningAverage lib");
+  Serial.print("Version: ");
+  Serial.println(RUNNINGAVERAGE_LIB_VERSION);
+  myRA.clear(); // explicitly start clean -- ONLY need this line in void setup()
 }
 
 void loop() {
@@ -65,7 +76,19 @@ void loop() {
     //Thermometer (Green)
     Serial.println((myIMU.readTempF()*1000), 4); // 82F was roughly the temperature in the lab, so this is meant to represent change in temperature...
 
-    delay(50);
+   // delay(50);
+    int rn = myIMU.readTempF() ; //this line initiates the variable, change "random(0,1000)" to the variable name you want to take the running average of; long is the type of variable rn-- running average-- is 
+  myRA.addValue(rn * 1000);
+  samples++;
+  Serial.print("Running Average: ");
+  Serial.println(myRA.getAverage(), 3);
+
+  if (samples == 300) // this line sets the number of samples included in the running average
+  {
+    samples = 0;
+    myRA.clear();
+  }
+  delay(50); //this line indicates the delay, lower the delay to collect more data points per time
   }
 
   record_ready = false;
